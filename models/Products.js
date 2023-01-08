@@ -11,10 +11,12 @@ const productSchema = new mongoose.Schema({
     tags: [String],
 });
 
-productSchema.statics.lista = function(filter, skip, limit) {
+productSchema.statics.lista = function(filter, skip, limit, fields, sort) {
     const query = Product.find(filter);
     query.skip(skip);
     query.limit(limit);
+    query.select(fields);
+    query.sort(sort);
     return query.exec()
 }
 

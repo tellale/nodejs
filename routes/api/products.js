@@ -19,6 +19,12 @@ router.get('/', async (req, res, next) => {
         const skip = req.query.skip;
         const limit = req.query.limit;
 
+        // Selection
+        const fields = req.query.fields;
+
+        // sorting
+        const sort = req.query.sort;
+
         // filtering
         const filter = {};
 
@@ -30,7 +36,15 @@ router.get('/', async (req, res, next) => {
             filter.price = price
         }
 
-        const products = await Product.lista(filter, skip, limit);
+        if (tags) {
+            filter.tags = tags
+        }
+
+        if(sell) {
+            filter.sell = sell
+        }
+
+        const products = await Product.lista(filter, skip, limit, fields, sort);
         res.json({ results: products });
     } catch(err) {
         next(err);
